@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureBank - Customer Data (Admin)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --bg-dark: #1a1a2e;
+            --text-light: #e0e0e0;
+            --table-header-bg: #0056b3;
+            --table-row-odd: #2b2b4d;
+            --table-row-even: #242440;
+            --border-color: #444466;
+            --edit-button-color: #ffc107; /* Amber for edit */
+            --save-button-color: #28a745; /* Green for save */
+            --modal-bg: rgba(0, 0, 0, 0.7);
+            --modal-content-bg: #242440;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: linear-gradient(45deg, #1a1a2e 0%, #0a0a1a 100%);
+        }
+
+        .container {
+            background-color: #242440;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 1200px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .data-table-container {
+            overflow-x: auto; /* Allows table to scroll horizontally on small screens */
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            word-wrap: break-word; /* Prevents long text from overflowing */
+        }
+
+        th {
+            background-color: var(--table-header-bg);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        tr:nth-child(odd) {
+            background-color: var(--table-row-odd);
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--table-row-even);
+        }
+
+        tr:hover {
+            background-color: #3a3a5a;
+            cursor: pointer;
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.1em;
+            color: #aaa;
+        }
+        
+        .edit-button {
+            background-color: var(--edit-button-color);
+            color: var(--text-dark); /* Dark text for light button */
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .edit-button:hover {
+            background-color: #e0a800;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: var(--modal-bg); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: var(--modal-content-bg);
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s;
+        }
+
+        .modal-content h3 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .modal-content .form-group-modal {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-content .form-group-modal label {
+            flex: 1;
+            font-weight: 400;
+            color: var(--text-light);
+            text-align: right;
+        }
+
+        .modal-content .form-group-modal input[type="text"],
+        .modal-content .form-group-modal input[type="email"],
+        .modal-content .form-group-modal input[type="number"],
+        .modal-content .form-group-modal input[type="tel"] {
+            flex: 2;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            font-size: 1em;
+        }
+        .modal-content .form-group-modal input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+
+        .modal-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .modal-buttons button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+        .modal-buttons #saveEdit {
+            background-color: var(--save-button-color);
+            color: white;
+        }
+        .modal-buttons #saveEdit:hover {
+            background-color: #218838;
+        }
+        .modal-buttons #cancelEdit {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        .modal-buttons #cancelEdit:hover {
+            background-color: #5a6268;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments for modal */
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95%;
+                margin: 20px auto;
+            }
+            .modal-content .form-group-modal {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            .modal-content .form-group-modal label {
+                text-align: left;
+                width: 100%;
+            }
+            .modal-content .form-group-modal input {
+                width: 100%;
+            }
+            .modal-buttons button {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>FutureBank Customer Accounts</h2>
+        <div class="data-table-container">
+            <table id="customerTable">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Mobile</th>
+                        <th>Account No.</th>
+                        <th>CIF No.</th>
+                        <th>IFSC Code</th>
+                        <th>Branch</th>
+                        <th>Account Type</th>
+                        <th>Initial Deposit</th>
+                        <th>Annual Income</th>
+                        <th>Village/Street</th>
+                        <th>Post Office</th>
+                        <th>Police Station</th>
+                        <th>City</th>
+                        <th>District</th>
+                        <th>State</th>
+                        <th>Pincode</th>
+                        <th>Landmark</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+            <p id="noDataMessage" class="no-data-message" style="display: none;">No customer data found. Please open an account first.</p>
+        </div>
+        </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3>Edit Customer Data</h3>
+            <form id="editForm">
+                <input type="hidden" id="editIndex"> <div class="form-group-modal">
+                    <label for="editFullName">Full Name:</label>
+                    <input type="text" id="editFullName" name="fullName">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editMobile">Mobile Number:</label>
+                    <input type="tel" id="editMobile" name="mobile">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editEmail">Email ID:</label>
+                    <input type="email" id="editEmail" name="email">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editAccountType">Account Type:</label>
+                    <input type="text" id="editAccountType" name="accountType" readonly> </div>
+                <div class="form-group-modal">
+                    <label for="editBranch">Branch:</label>
+                    <input type="text" id="editBranch" name="selectedBranch" readonly> </div>
+                <div class="form-group-modal">
+                    <label for="editInitialDeposit">Initial Deposit:</label>
+                    <input type="number" id="editInitialDeposit" name="initialDeposit">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editAnnualIncome">Annual Income:</label>
+                    <input type="number" id="editAnnualIncome" name="annualIncome">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editVillageStreet">Village/Street:</label>
+                    <input type="text" id="editVillageStreet" name="villageStreet">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editPostOffice">Post Office:</label>
+                    <input type="text" id="editPostOffice" name="postOffice">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editPoliceStation">Police Station:</label>
+                    <input type="text" id="editPoliceStation" name="policeStation">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editAddressCity">City:</label>
+                    <input type="text" id="editAddressCity" name="addressCity">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editAddressDistrict">District:</label>
+                    <input type="text" id="editAddressDistrict" name="addressDistrict">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editAddressState">State:</label>
+                    <input type="text" id="editAddressState" name="addressState">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editPincode">Pincode:</label>
+                    <input type="text" id="editPincode" name="pincode">
+                </div>
+                <div class="form-group-modal">
+                    <label for="editLandmark">Landmark:</label>
+                    <input type="text" id="editLandmark" name="landmark">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="saveEdit">Save Changes</button>
+                    <button type="button" id="cancelEdit">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const customerTableBody = document.querySelector('#customerTable tbody');
+            const noDataMessage = document.getElementById('noDataMessage');
+            const editModal = document.getElementById('editModal');
+            const editForm = document.getElementById('editForm');
+            const saveEditButton = document.getElementById('saveEdit');
+            const cancelEditButton = document.getElementById('cancelEdit');
+
+            // Function to load and display customer data
+            function loadCustomerData() {
+                const registeredCustomers = JSON.parse(localStorage.getItem('futureBankCustomers')) || [];
+                customerTableBody.innerHTML = ''; // Clear existing rows
+
+                if (registeredCustomers.length === 0) {
+                    noDataMessage.style.display = 'block';
+                    customerTable.style.display = 'none';
+                    return;
+                }
+
+                noDataMessage.style.display = 'none';
+                customerTable.style.display = 'table';
+
+                registeredCustomers.forEach((customer, index) => {
+                    const row = customerTableBody.insertRow();
+                    row.insertCell().textContent = customer.fullName;
+                    row.insertCell().textContent = customer.mobile;
+                    row.insertCell().textContent = customer.accountNumber;
+                    row.insertCell().textContent = customer.cifNumber;
+                    row.insertCell().textContent = customer.ifscCode;
+                    row.insertCell().textContent = customer.selectedBranch;
+                    row.insertCell().textContent = customer.accountType;
+                    row.insertCell().textContent = '₹ ' + parseFloat(customer.initialDeposit).toLocaleString('en-IN');
+                    row.insertCell().textContent = '₹ ' + parseFloat(customer.annualIncome).toLocaleString('en-IN');
+                    // Detailed Address Fields
+                    row.insertCell().textContent = customer.villageStreet;
+                    row.insertCell().textContent = customer.postOffice;
+                    row.insertCell().textContent = customer.policeStation;
+                    row.insertCell().textContent = customer.addressCity;
+                    row.insertCell().textContent = customer.addressDistrict;
+                    row.insertCell().textContent = customer.addressState;
+                    row.insertCell().textContent = customer.pincode;
+                    row.insertCell().textContent = customer.landmark || 'N/A';
+
+                    const actionsCell = row.insertCell();
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.classList.add('edit-button');
+                    editButton.dataset.index = index; // Store the index of the customer in the button
+                    actionsCell.appendChild(editButton);
+                });
+            }
+
+            // Event listener for edit buttons
+            customerTableBody.addEventListener('click', function(event) {
+                if (event.target.classList.contains('edit-button')) {
+                    const index = event.target.dataset.index;
+                    const registeredCustomers = JSON.parse(localStorage.getItem('futureBankCustomers')) || [];
+                    const customerToEdit = registeredCustomers[index];
+
+                    // Populate the modal form with existing data
+                    document.getElementById('editIndex').value = index;
+                    document.getElementById('editFullName').value = customerToEdit.fullName;
+                    document.getElementById('editMobile').value = customerToEdit.mobile;
+                    document.getElementById('editEmail').value = customerToEdit.email;
+                    document.getElementById('editAccountType').value = customerToEdit.accountType;
+                    document.getElementById('editBranch').value = customerToEdit.selectedBranch;
+                    document.getElementById('editInitialDeposit').value = customerToEdit.initialDeposit;
+                    document.getElementById('editAnnualIncome').value = customerToEdit.annualIncome;
+                    document.getElementById('editVillageStreet').value = customerToEdit.villageStreet;
+                    document.getElementById('editPostOffice').value = customerToEdit.postOffice;
+                    document.getElementById('editPoliceStation').value = customerToEdit.policeStation;
+                    document.getElementById('editAddressCity').value = customerToEdit.addressCity;
+                    document.getElementById('editAddressDistrict').value = customerToEdit.addressDistrict;
+                    document.getElementById('editAddressState').value = customerToEdit.addressState;
+                    document.getElementById('editPincode').value = customerToEdit.pincode;
+                    document.getElementById('editLandmark').value = customerToEdit.landmark;
+
+                    editModal.style.display = 'block'; // Show the modal
+                }
+            });
+
+            // Save changes from the modal
+            saveEditButton.addEventListener('click', function() {
+                const index = document.getElementById('editIndex').value;
+                let registeredCustomers = JSON.parse(localStorage.getItem('futureBankCustomers')) || [];
+
+                if (index !== null && registeredCustomers[index]) {
+                    // Update specific fields from the modal form
+                    registeredCustomers[index].fullName = document.getElementById('editFullName').value;
+                    // Check for mobile number uniqueness on edit as well (optional but good practice)
+                    const newMobile = document.getElementById('editMobile').value;
+                    const existingCustomerWithNewMobile = registeredCustomers.find((customer, i) => i != index && customer.mobile === newMobile);
+                    if (existingCustomerWithNewMobile) {
+                        alert('This mobile number is already in use by another account. Please use a different number.');
+                        return; // Prevent saving
+                    }
+                    registeredCustomers[index].mobile = newMobile;
+                    registeredCustomers[index].email = document.getElementById('editEmail').value;
+                    // registeredCustomers[index].accountType = document.getElementById('editAccountType').value; // Keep read-only
+                    // registeredCustomers[index].selectedBranch = document.getElementById('editBranch').value; // Keep read-only
+                    registeredCustomers[index].initialDeposit = document.getElementById('editInitialDeposit').value;
+                    registeredCustomers[index].annualIncome = document.getElementById('editAnnualIncome').value;
+                    registeredCustomers[index].villageStreet = document.getElementById('editVillageStreet').value;
+                    registeredCustomers[index].postOffice = document.getElementById('editPostOffice').value;
+                    registeredCustomers[index].policeStation = document.getElementById('editPoliceStation').value;
+                    registeredCustomers[index].addressCity = document.getElementById('editAddressCity').value;
+                    registeredCustomers[index].addressDistrict = document.getElementById('editAddressDistrict').value;
+                    registeredCustomers[index].addressState = document.getElementById('editAddressState').value;
+                    registeredCustomers[index].pincode = document.getElementById('editPincode').value;
+                    registeredCustomers[index].landmark = document.getElementById('editLandmark').value;
+
+                    // Update the combined full address string if it's used elsewhere
+                    registeredCustomers[index].fullAddressForPassbook = 
+                        `${registeredCustomers[index].villageStreet}, P.O. ${registeredCustomers[index].postOffice}, P.S. ${registeredCustomers[index].policeStation}, ` +
+                        `${registeredCustomers[index].addressCity}, ${registeredCustomers[index].addressDistrict}, ${registeredCustomers[index].addressState}, ` +
+                        `Pincode: ${registeredCustomers[index].pincode}${registeredCustomers[index].landmark ? ', Landmark: ' + registeredCustomers[index].landmark : ''}`;
+
+                    localStorage.setItem('futureBankCustomers', JSON.stringify(registeredCustomers));
+                    editModal.style.display = 'none'; // Hide the modal
+                    loadCustomerData(); // Reload data to show updated values
+                }
+            });
+
+            // Cancel edit
+            cancelEditButton.addEventListener('click', function() {
+                editModal.style.display = 'none'; // Hide the modal
+            });
+
+            // Close modal if user clicks outside of it
+            window.addEventListener('click', function(event) {
+                if (event.target == editModal) {
+                    editModal.style.display = 'none';
+                }
+            });
+
+            // Load data when the page loads
+            loadCustomerData();
+        });
+    </script>
+</body>
+</html>
