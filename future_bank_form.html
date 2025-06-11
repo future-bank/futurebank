@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureBank - Account Opening</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff; /* Blue */
+            --secondary-color: #6c757d; /* Gray */
+            --accent-color: #28a745; /* Green for success */
+            --bg-dark: #1a1a2e; /* Dark background */
+            --bg-light: #f0f2f5; /* Light background for elements */
+            --text-light: #e0e0e0;
+            --text-dark: #333;
+            --border-color: #444466;
+            --input-bg: #2b2b4d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: linear-gradient(45deg, #1a1a2e 0%, #0a0a1a 100%);
+        }
+
+        .container {
+            background-color: #242440;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 900px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        fieldset {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            background-color: #2b2b4d;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        legend {
+            font-weight: 600;
+            color: var(--primary-color);
+            padding: 0 15px;
+            font-size: 1.1em;
+            background-color: #242440;
+            border-radius: 5px;
+            margin-left: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: var(--text-light);
+            flex: 1 1 180px; /* Label takes flexible space */
+            text-align: right;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="number"],
+        .form-group input[type="tel"],
+        .form-group input[type="date"],
+        .form-group select,
+        .form-group textarea {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            flex: 2 1 300px; /* Input takes more flexible space */
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #999;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex: 2 1 300px;
+            align-items: center;
+        }
+
+        .radio-group label {
+            margin-bottom: 0;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            text-align: left; /* Override default right align for labels here */
+            flex: unset; /* Remove flex basis */
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 8px;
+            accent-color: var(--primary-color); /* For modern browsers */
+            width: auto;
+            flex: unset; /* Remove flex basis */
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .button-group button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin: 0 15px;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .button-group button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .button-group button[type="reset"] {
+            background-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+        }
+        .button-group button[type="reset"]:hover {
+            background-color: #5a6268;
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        /* Passbook style */
+        #passbookOutput {
+            background-color: #2b2b4d;
+            border: 1px solid var(--accent-color);
+            padding: 30px;
+            margin-top: 50px;
+            border-radius: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            display: none; /* Hidden by default */
+            color: var(--text-light);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+            position: relative; /* For the congratulations overlay */
+            overflow: hidden; /* To hide overflow from particles */
+        }
+        #passbookOutput h3.congrats {
+            text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            font-weight: 800; /* Bolder for emphasis */
+            font-size: 2.2em; /* Larger font size */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        #passbookOutput .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #444;
+        }
+        #passbookOutput .info-row:last-child {
+            border-bottom: none;
+        }
+        #passbookOutput .info-row span:first-child {
+            font-weight: bold;
+            color: var(--primary-color);
+            flex-basis: 45%;
+        }
+        #passbookOutput .info-row span:last-child {
+            flex-basis: 53%;
+            text-align: right;
+            word-break: break-all; /* For long numbers/codes */
+        }
+        #passbookOutput .note {
+            margin-top: 30px;
+            font-size: 0.85em;
+            text-align: center;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 300px) {
+            .container {
+                padding: 30px;
+            }
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .form-group label {
+                text-align: left;
+                margin-bottom: 5px;
+                flex: none;
+                width: 100%;
+            }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                flex: none;
+                width: 100%;
+            }
+            .radio-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .button-group button {
+                width: 100%;
+                margin: 10px 0;
+            }
+            #passbookOutput .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            #passbookOutput .info-row span:last-child {
+                text-align: left;
+            }
+            #passbookOutput h3.congrats {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>FutureBank - Open Your Account</h2>
+        <form id="bankAccountForm">
+
+            <fieldset>
+                <legend>Personal Details</legend>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Your Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="fatherHusbandName">Father's/Husband's Name:</label>
+                    <input type="text" id="fatherHusbandName" name="fatherHusbandName" placeholder="Father's or Husband's Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="motherName">Mother's Name:</label>
+                    <input type="text" id="motherName" name="motherName" placeholder="Mother's Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="male" name="gender" value="Male" required>
+                        <label for="male">Male</label>
+                        <input type="radio" id="female" name="gender" value="Female">
+                        <label for="female">Female</label>
+                        <input type="radio" id="other" name="gender" value="Other">
+                        <label for="other">Other</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nationality">Nationality:</label>
+                    <input type="text" id="nationality" name="nationality" value="Indian" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="profession">Profession:</label>
+                    <select id="profession" name="profession" required>
+                        <option value="">Select your profession</option>
+                        <option value="Student">Student</option>
+                        <option value="Salaried">Salaried Employee</option>
+                        <option value="Businessman">Businessman</option>
+                        <option value="Farmer">Farmer</option>
+                        <option value="Housewife">Housewife</option>
+                        <option value="Retired">Retired</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="annualIncome">Annual Income (INR):</label>
+                    <input type="number" id="annualIncome" name="annualIncome" min="0" placeholder="e.g., 500000" required>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Contact Information</legend>
+                <div class="form-group">
+                    <label for="villageStreet">Village/Street:</label>
+                    <input type="text" id="villageStreet" name="villageStreet" placeholder="Village/Street Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="postOffice">Post Office:</label>
+                    <input type="text" id="postOffice" name="postOffice" placeholder="Post Office Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="policeStation">Police Station:</label>
+                    <input type="text" id="policeStation" name="policeStation" placeholder="Police Station Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="addressCity">City:</label>
+                    <input type="text" id="addressCity" name="addressCity" placeholder="City Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="addressState">State:</label>
+                    <select id="addressState" name="addressState" required>
+                        <option value="">Select State</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="addressDistrict">District:</label>
+                    <select id="addressDistrict" name="addressDistrict" required disabled>
+                        <option value="">Select District</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="landmark">Landmark (Optional):</label>
+                    <input type="text" id="landmark" name="landmark" placeholder="Near XYZ building">
+                </div>
+                <div class="form-group">
+                    <label for="pincode">Pincode:</label>
+                    <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" placeholder="6 digit Pincode" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="tel" id="mobile" name="mobile" placeholder="e.g., 9876543210 (10 digits)" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email ID:</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Indian Identity Documents</legend>
+                <div class="form-group">
+                    <label for="aadhaar">Aadhaar Number:</label>
+                    <input type="text" id="aadhaar" name="aadhaar" placeholder="XXXX XXXX XXXX (12 digits)" pattern="[0-9]{4} [0-9]{4} [0-9]{4}" required>
+                </div>
+                <div class="form-group">
+                    <label for="pan">PAN Card Number:</label>
+                    <input type="text" id="pan" name="pan" placeholder="ABCDE1234F (10 characters)" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required>
+                </div>
+                <div class="form-group">
+                    <label for="voterId">Voter ID Number (Optional):</label>
+                    <input type="text" id="voterId" name="voterId" placeholder="e.g., ABC1234567 (alphanumeric)">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Account & Branch Information</legend>
+                <div class="form-group">
+                    <label for="accountType">Desired Account Type:</label>
+                    <select id="accountType" name="accountType" required>
+                        <option value="">Choose an Account Type</option>
+                        <option value="Savings">Savings Account</option>
+                        <option value="Current">Current Account</option>
+                        <option value="Fixed Deposit (FD)">Fixed Deposit (FD)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="selectBranch">Select Branch:</label>
+                    <select id="selectBranch" name="selectBranch" required disabled>
+                        <option value="">Select Branch</option>
+</select>
+                </div>
+                <div class="form-group">
+                    <label for="initialDeposit">Initial Deposit (INR):</label>
+                    <input type="number" id="initialDeposit" name="initialDeposit" min="1000" placeholder="Minimum ₹1000" required>
+                </div>
+                <div class="form-group">
+                    <label for="nomineeName">Nominee's Full Name:</label>
+                    <input type="text" id="nomineeName" name="nomineeName" placeholder="Nominee's Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="nomineeRelation">Relationship with Nominee:</label>
+                    <input type="text" id="nomineeRelation" name="nomineeRelation" placeholder="e.g., Mother, Spouse, Child" required>
+                </div>
+            </fieldset>
+
+            <div class="button-group">
+                <button type="submit">Open My Account</button>
+                <button type="reset">Clear Form</button>
+            </div>
+        </form>
+
+        <div id="passbookOutput">
+            <h3 class="congrats">Congratulations!</h3>
+            <p class="note">Your FutureBank account has been successfully opened.</p>
+            <div class="info-row"><span>Account Holder:</span> <span id="outputFullName"></span></div>
+            <div class="info-row"><span>Registered Address:</span> <span id="outputAddress"></span></div>
+            <div class="info-row"><span>Account Type:</span> <span id="outputAccountType"></span></div>
+            <div class="info-row"><span>Account Number:</span> <span id="outputAccountNumber"></span></div>
+            <div class="info-row"><span>CIF Number:</span> <span id="outputCifNumber"></span></div>
+            <div class="info-row"><span>IFSC Code:</span> <span id="outputIfscCode"></span></div>
+            <div class="info-row"><span>Branch:</span> <span id="outputBranch"></span></div>
+            <div class="info-row"><span>Initial Deposit:</span> <span id="outputInitialDeposit"></span></div>
+            <div class="info-row"><span>Annual Income:</span> <span id="outputAnnualIncome"></span></div>
+            <p class="note" style="margin-top: 30px;">This is a digital summary for your reference. A physical passbook and welcome kit will be dispatched to your registered address soon.</p>
+        </div>
+    </div>
+
+    <script>
+        // Use localStorage to simulate a database for this demo
+        let registeredCustomers = JSON.parse(localStorage.getItem('futureBankCustomers')) || [];
+        const FIXED_IFSC = 'FUTB0000001'; // Fixed IFSC code for all accounts
+
+        // Define bank branches data structure
+        const bankBranches = {
+            "West Bengal": {
+                "Alipurduar": ["Alipurduar Main"], // Add specific branches for each district if needed
+                "Bankura": ["Bankura Town Branch"],
+                "Birbhum": ["Bolpur Branch"],
+                "Cooch Behar": ["Cooch Behar Central"],
+                "Dakshin Dinajpur": ["Balurghat Branch"],
+                "Darjeeling": ["Darjeeling Main", "Siliguri Branch"],
+                "Hooghly": ["Chinsurah Branch"],
+                "Howrah": ["Howrah Main"],
+                "Jalpaiguri": ["Jalpaiguri City"],
+                "Jhargram": ["Jhargram Town"],
+                "Kalimpong": ["Kalimpong Main"],
+                "Kolkata": ["Dalhousie", "Park Street", "Esplanade"],
+                "Malda": ["Malda Town Branch"],
+                "Murshidabad": ["Baharampur Branch"],
+                "Nadia": ["Karimpur Head Branch"], // Specific logic for Nadia
+                "North 24 Parganas": ["Barasat Main", "Dum Dum Branch"],
+                "Paschim Bardhaman": ["Asansol Branch", "Durgapur Branch"],
+                "Paschim Medinipur": ["Midnapore Branch", "Kharagpur Branch"],
+                "Purba Bardhaman": ["Bardhaman Main"],
+                "Purba Medinipur": ["Tamluk Branch", "Haldia Branch"],
+                "Purulia": ["Purulia Town"],
+                "South 24 Parganas": ["Diamond Harbour Branch"],
+                "Uttar Dinajpur": ["Raiganj Branch"]
+            },
+            "Maharashtra": {
+                "Mumbai": ["Colaba", "Andheri", "Bandra"],
+                "Pune": ["Shivajinagar", "Kothrud"],
+            },
+            // Add more states and their districts/branches
+        };
+
+        // Get select elements
+        const stateSelect = document.getElementById('addressState');
+        const districtSelect = document.getElementById('addressDistrict');
+        const branchSelect = document.getElementById('selectBranch');
+        const policeStationInput = document.getElementById('policeStation'); // Get the Police Station input
+
+        // Function to populate states
+        function populateStates() {
+            stateSelect.innerHTML = '<option value="">Select State</option>';
+            for (const state in bankBranches) {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            }
+            // Set West Bengal as default selected
+            stateSelect.value = "West Bengal";
+            populateDistricts(); // Populate districts for West Bengal by default
+        }
+
+        // Function to populate districts based on selected state
+        function populateDistricts() {
+            const selectedState = stateSelect.value;
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+            districtSelect.disabled = true;
+            branchSelect.innerHTML = '<option value="">Select Branch</option>';
+            branchSelect.disabled = true;
+
+            if (selectedState && bankBranches[selectedState]) {
+                // Get district keys and sort them alphabetically
+                const districts = Object.keys(bankBranches[selectedState]).sort();
+                districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+                districtSelect.disabled = false;
+                // Keep Nadia as default if it exists, otherwise select the first district
+                if (districts.includes("Nadia")) {
+                    districtSelect.value = "Nadia";
+                } else if (districts.length > 0) {
+                    districtSelect.value = districts[0];
+                }
+                populateBranches(); // Populate branches for the selected/default district
+            }
+        }
+
+        // Function to populate branches based on selected district
+        function populateBranches() {
+            const selectedState = stateSelect.value;
+            const selectedDistrict = districtSelect.value;
+            branchSelect.innerHTML = '<option value="">Select Branch</option>';
+            branchSelect.disabled = true;
+
+            if (selectedState && selectedDistrict && bankBranches[selectedState] && bankBranches[selectedState][selectedDistrict]) {
+                const branches = bankBranches[selectedState][selectedDistrict];
+                branches.forEach(branch => {
+                    const option = document.createElement('option');
+                    option.value = branch;
+                    option.textContent = branch;
+                    branchSelect.appendChild(option);
+                });
+                branchSelect.disabled = false;
+                // Set the first branch as default if available, or Karimpur Head Branch for Nadia
+                if (selectedDistrict === "Nadia" && branches.includes("Karimpur Head Branch")) {
+                    branchSelect.value = "Karimpur Head Branch";
+                } else if (branches.length > 0) {
+                    branchSelect.value = branches[0];
+                }
+            }
+        }
+
+        // Event listeners for select changes
+        stateSelect.addEventListener('change', populateDistricts);
+        districtSelect.addEventListener('change', populateBranches);
+
+        // Initial population of states and districts/branches on page load
+        document.addEventListener('DOMContentLoaded', populateStates);
+
+        document.getElementById('bankAccountForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevents the default form submission (page reload)
+
+            const mobileNumber = document.getElementById('mobile').value;
+
+            // Check if mobile number already exists
+            const existingCustomer = registeredCustomers.find(customer => customer.mobile === mobileNumber);
+            if (existingCustomer) {
+                alert('An account with this mobile number already exists. Please use a different mobile number or contact support.');
+                return; // Stop form submission
+            }
+
+            // Get all form values including detailed address and selected branch
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                fatherHusbandName: document.getElementById('fatherHusbandName').value,
+                motherName: document.getElementById('motherName').value,
+                dob: document.getElementById('dob').value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                nationality: document.getElementById('nationality').value,
+                profession: document.getElementById('profession').value,
+                annualIncome: document.getElementById('annualIncome').value,
+                // Detailed Address
+                villageStreet: document.getElementById('villageStreet').value,
+                postOffice: document.getElementById('postOffice').value,
+                policeStation: document.getElementById('policeStation').value, // Changed from thana
+                addressCity: document.getElementById('addressCity').value,
+                addressState: document.getElementById('addressState').value,
+                addressDistrict: document.getElementById('addressDistrict').value,
+                landmark: document.getElementById('landmark').value,
+                pincode: document.getElementById('pincode').value,
+
+                mobile: mobileNumber,
+                email: document.getElementById('email').value,
+                aadhaar: document.getElementById('aadhaar').value,
+                pan: document.getElementById('pan').value,
+                voterId: document.getElementById('voterId').value,
+                accountType: document.getElementById('accountType').value,
+                selectedBranch: document.getElementById('selectBranch').value, // Selected Branch
+                initialDeposit: document.getElementById('initialDeposit').value,
+                nomineeName: document.getElementById('nomineeName').value,
+                nomineeRelation: document.getElementById('nomineeRelation').value
+            };
+
+            // Combine address parts for display in passbook if desired
+            // Using "Police Station" in the combined address
+            const fullAddressForPassbook = `${formData.villageStreet}, P.O. ${formData.postOffice}, P.S. ${formData.policeStation}, ${formData.addressCity}, ${formData.addressDistrict}, ${formData.addressState}, Pincode: ${formData.pincode}${formData.landmark ? ', Landmark: ' + formData.landmark : ''}`;
+
+            // --- Auto-generate Unique Dummy Bank Details ---
+            const generateRandomNumber = (length) => {
+                let result = '';
+                const characters = '0123456789';
+                for (let i = 0; i < length; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return result;
+            };
+
+            // Ensure unique Account Number and CIF Number
+            let accountNumber, cifNumber;
+            do {
+                accountNumber = '90' + generateRandomNumber(10); // 12-digit dummy account
+            } while (registeredCustomers.some(customer => customer.accountNumber === accountNumber));
+
+            do {
+                cifNumber = 'C' + generateRandomNumber(9); // 10-digit dummy CIF
+            } while (registeredCustomers.some(customer => customer.cifNumber === cifNumber));
+            
+            // Assign generated and fixed bank details
+            formData.accountNumber = accountNumber;
+            formData.cifNumber = cifNumber;
+            formData.ifscCode = FIXED_IFSC; // Use the fixed IFSC code
+            formData.fullAddressForPassbook = fullAddressForPassbook; // Add combined address
+
+            // Add new customer to our dummy storage
+            registeredCustomers.push(formData);
+            localStorage.setItem('futureBankCustomers', JSON.stringify(registeredCustomers));
+
+            // Populate the passbook output section
+            document.getElementById('outputFullName').textContent = formData.fullName;
+            document.getElementById('outputAddress').textContent = formData.fullAddressForPassbook;
+            document.getElementById('outputAccountType').textContent = formData.accountType;
+            document.getElementById('outputAccountNumber').textContent = formData.accountNumber;
+            document.getElementById('outputCifNumber').textContent = formData.cifNumber;
+            document.getElementById('outputIfscCode').textContent = formData.ifscCode;
+            document.getElementById('outputBranch').textContent = formData.selectedBranch; // Output selected branch
+            document.getElementById('outputInitialDeposit').textContent = '₹ ' + parseFloat(formData.initialDeposit).toLocaleString('en-IN');
+            document.getElementById('outputAnnualIncome').textContent = '₹ ' + parseFloat(formData.annualIncome).toLocaleString('en-IN');
+
+            // Show the passbook output and hide the form
+            document.getElementById('passbookOutput').style.display = 'block';
+            this.style.display = 'none'; // Hides the form after submission
+        });
+
+        // Add event listener for reset button to re-show the form
+        document.getElementById('bankAccountForm').addEventListener('reset', function() {
+            document.getElementById('passbookOutput').style.display = 'none';
+            this.style.display = 'block';
+            // Reset dropdowns to initial state
+            populateStates(); 
+        });
+
+    </script>
+</body>
+</html>

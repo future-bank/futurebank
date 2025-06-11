@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureBank - Cashier Operations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff; /* Blue */
+            --accent-color: #28a745; /* Green for success */
+            --warning-color: #ffc107; /* Yellow for warnings */
+            --danger-color: #dc3545; /* Red for errors */
+            --bg-dark: #1a1a2e; /* Dark background */
+            --bg-light: #2b2b4d; /* Lighter background for sections */
+            --text-light: #e0e0e0;
+            --border-color: #444466;
+            --input-bg: #1f1f3f;
+            --button-deposit: #28a745;
+            --button-withdraw: #dc3545;
+            --button-search: #007bff;
+            --transaction-deposit: #d4edda; /* Light green */
+            --transaction-withdraw: #f8d7da; /* Light red */
+            --modal-bg: rgba(0, 0, 0, 0.8); /* Darker overlay for receipt */
+            --receipt-bg: #f8f9fa; /* Light background for receipt */
+            --receipt-text-dark: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px;
+            box-sizing: border-box;
+            background-image: linear-gradient(45deg, #1a1a2e 0%, #0a0a1a 100%);
+        }
+
+        .container {
+            background-color: #242440;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 900px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .logged-in-cashier {
+            text-align: right;
+            font-size: 0.9em;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        .logout-button {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 0.8em;
+            text-decoration: underline;
+            margin-left: 10px;
+        }
+        .logout-button:hover {
+            color: #ff6b6b;
+        }
+
+        .section {
+            background-color: var(--bg-light);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+
+        .button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .button-primary {
+            background-color: var(--button-search);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+        .button-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .button-deposit {
+            background-color: var(--button-deposit);
+            color: white;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        .button-deposit:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .button-withdraw {
+            background-color: var(--button-withdraw);
+            color: white;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+        .button-withdraw:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .customer-info {
+            background-color: var(--input-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            display: none; /* Hidden by default */
+        }
+        .customer-info p {
+            margin: 8px 0;
+            font-size: 1.05em;
+        }
+        .customer-info span {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .customer-info .balance {
+            font-size: 1.3em;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            margin-top: 20px;
+        }
+        .actions-group input {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none; /* Hidden by default */
+        }
+        .message.success {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .message.error {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        .message.warning {
+            background-color: var(--warning-color);
+            color: var(--text-dark);
+        }
+
+        .transaction-history {
+            margin-top: 25px;
+        }
+        .transaction-history h4 {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        .transaction-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            padding: 10px;
+        }
+        .transaction-list p {
+            margin: 5px 0;
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-size: 0.95em;
+            word-break: break-all; /* Ensure long text wraps */
+        }
+        .transaction-list p.deposit {
+            background-color: var(--transaction-deposit);
+            color: #155724; /* Dark green for text */
+        }
+        .transaction-list p.withdrawal {
+            background-color: var(--transaction-withdraw);
+            color: #721c24; /* Dark red for text */
+        }
+        .transaction-list p.no-history {
+            text-align: center;
+            font-style: italic;
+            color: #aaa;
+        }
+        #transactionamount{
+            border-radius: 3px;
+        }
+
+        /* Modal for Success Receipt */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: var(--modal-bg); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: var(--receipt-bg);
+            color: var(--receipt-text-dark);
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.8em;
+        }
+        .modal-content p {
+            margin: 10px 0;
+            font-size: 1.05em;
+            line-height: 1.4;
+        }
+        .modal-content p strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .modal-content .transaction-detail {
+            background-color: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .modal-content .transaction-detail span {
+            float: right;
+            font-weight: 600;
+        }
+        .modal-content .button-close {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .modal-content .button-close:hover {
+            background-color: #0056b3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 300px) {
+            .container {
+                padding: 30px;
+            }
+            .actions-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .actions-group input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+                margin: 20px auto;
+            }
+            .modal-content h3 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logged-in-cashier">
+            Logged in as: <span id="cashierNameDisplay"></span> (<span id="cashierIdDisplay"></span>)
+            <button class="logout-button" id="logoutBtn">Logout</button>
+        </div>
+        <h2>FutureBank - Cashier Operations</h2>
+
+        <div class="section">
+            <h3>Search Customer Account</h3>
+            <div class="form-group">
+                <label for="accountSearch">Enter Account Number:</label>
+                <input type="text" id="accountSearch" placeholder="e.g., 901234567890">
+            </div>
+            <button class="button button-primary" id="searchAccountBtn">Search Account</button>
+
+            <div class="customer-info" id="customerInfo">
+                <p>Account Holder: <span id="customerName"></span></p>
+                <p>Mobile Number: <span id="customerMobile"></span></p>
+                <p>Branch: <span id="customerBranch"></span></p>
+                <p class="balance">Current Balance: <span id="currentBalance">₹ 0.00</span></p>
+            </div>
+            <div class="message" id="searchMessage"></div>
+        </div>
+
+        <div class="section" id="transactionSection" style="display: none;">
+            <h3>Transactions</h3>
+            
+            <div class="actions-group">
+                <input type="number" id="transactionAmount" placeholder="Enter amount">
+                <button class="button button-deposit" id="depositBtn">Deposit</button>
+                <button class="button button-withdraw" id="withdrawBtn">Withdraw</button>
+            </div>
+            <div class="message" id="transactionMessage"></div>
+
+            <div class="transaction-history">
+                <h4>Transaction History</h4>
+                <div class="transaction-list" id="historyList">
+                    <p class="no-history">No transactions yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h3>Transaction Successful!</h3>
+            <p class="transaction-detail">Transaction Type: <span id="receiptType"></span></p>
+            <p class="transaction-detail">Amount: <span id="receiptAmount"></span></p>
+            <p class="transaction-detail">Transaction ID: <span id="receiptTxnId"></span></p>
+            <p class="transaction-detail">New Balance: <span id="receiptNewBalance"></span></p>
+            <p class="transaction-detail">Customer Name: <span id="receiptCustomerName"></span></p>
+            <p class="transaction-detail">Account No (Last 6): <span id="receiptAccountNoLast6"></span></p>
+            <p class="transaction-detail">Branch: <span id="receiptBranch"></span></p>
+            <p class="transaction-detail">Cashier Name: <span id="receiptCashierName"></span></p>
+            <p class="transaction-detail">Cashier ID: <span id="receiptCashierId"></span></p>
+            <p class="transaction-detail">Date & Time: <span id="receiptDateTime"></span></p>
+            <button class="button-close" id="closeModalBtn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Check if cashier is logged in
+        const loggedInCashierId = sessionStorage.getItem('loggedInCashierId');
+        const loggedInCashierName = sessionStorage.getItem('loggedInCashierName');
+
+        if (!loggedInCashierId || !loggedInCashierName) {
+            // If not logged in, redirect to login page
+            window.location.href = 'cashier_login.html';
+        } else {
+            // Display cashier info
+            document.getElementById('cashierNameDisplay').textContent = loggedInCashierName;
+            document.getElementById('cashierIdDisplay').textContent = loggedInCashierId;
+        }
+
+        // Get elements
+        const accountSearchInput = document.getElementById('accountSearch');
+        const searchAccountBtn = document.getElementById('searchAccountBtn');
+        const customerInfoDiv = document.getElementById('customerInfo');
+        const customerNameSpan = document.getElementById('customerName');
+        const customerMobileSpan = document.getElementById('customerMobile');
+        const customerBranchSpan = document.getElementById('customerBranch'); // New
+        const currentBalanceSpan = document.getElementById('currentBalance');
+        const searchMessageDiv = document.getElementById('searchMessage');
+        const transactionSection = document.getElementById('transactionSection');
+        const transactionAmountInput = document.getElementById('transactionAmount');
+        const depositBtn = document.getElementById('depositBtn');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const transactionMessageDiv = document.getElementById('transactionMessage');
+        const historyListDiv = document.getElementById('historyList');
+        const logoutBtn = document.getElementById('logoutBtn'); // Logout button
+
+        // Modal Elements
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const receiptType = document.getElementById('receiptType');
+        const receiptAmount = document.getElementById('receiptAmount');
+        const receiptTxnId = document.getElementById('receiptTxnId');
+        const receiptNewBalance = document.getElementById('receiptNewBalance');
+        const receiptCustomerName = document.getElementById('receiptCustomerName');
+        const receiptAccountNoLast6 = document.getElementById('receiptAccountNoLast6');
+        const receiptBranch = document.getElementById('receiptBranch');
+        const receiptCashierName = document.getElementById('receiptCashierName');
+        const receiptCashierId = document.getElementById('receiptCashierId');
+        const receiptDateTime = document.getElementById('receiptDateTime');
+
+        let currentCustomer = null; // Stores the currently selected customer object
+
+        // Load all customer data from localStorage
+        function getCustomers() {
+            return JSON.parse(localStorage.getItem('futureBankCustomers')) || [];
+        }
+
+        // Save all customer data back to localStorage
+        function saveCustomers(customers) {
+            localStorage.setItem('futureBankCustomers', JSON.stringify(customers));
+        }
+
+        // Display a message (success/error/warning)
+        function displayMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `message ${type}`;
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
+
+        // Function to generate a unique transaction ID
+        function generateTransactionId() {
+            return 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+        }
+
+        // Update customer balance and history display
+        function updateCustomerDisplay() {
+            if (currentCustomer) {
+                customerInfoDiv.style.display = 'block';
+                transactionSection.style.display = 'block';
+
+                customerNameSpan.textContent = currentCustomer.fullName;
+                customerMobileSpan.textContent = currentCustomer.mobile;
+                customerBranchSpan.textContent = currentCustomer.selectedBranch || 'N/A'; // Display branch
+                currentBalanceSpan.textContent = `₹ ${parseFloat(currentCustomer.initialDeposit).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+                // Display transaction history
+                historyListDiv.innerHTML = ''; // Clear previous history
+                if (currentCustomer.transactions && currentCustomer.transactions.length > 0) {
+                    // Sort transactions by date (most recent first)
+                    const sortedTransactions = [...currentCustomer.transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    sortedTransactions.forEach(t => {
+                        const p = document.createElement('p');
+                        const transactionDetails = `
+                            ${new Date(t.date).toLocaleString()} - ${t.type}: 
+                            ₹ ${parseFloat(t.amount).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})} 
+                            (New Balance: ₹ ${parseFloat(t.newBalance).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})})
+                            ${t.transactionId ? ` | Txn ID: ${t.transactionId}` : ''}
+                            ${t.cashierName ? ` | By: ${t.cashierName} (${t.cashierId})` : ''}
+                        `;
+                        p.textContent = transactionDetails.replace(/\s+/g, ' ').trim(); // Clean up extra spaces
+                        p.classList.add(t.type.toLowerCase());
+                        historyListDiv.appendChild(p);
+                    });
+                    historyListDiv.scrollTop = historyListDiv.scrollHeight; // Scroll to bottom
+                } else {
+                    historyListDiv.innerHTML = '<p class="no-history">No transactions yet.</p>';
+                }
+            } else {
+                customerInfoDiv.style.display = 'none';
+                transactionSection.style.display = 'none';
+            }
+        }
+
+        // Search Account functionality
+        searchAccountBtn.addEventListener('click', function() {
+            const accountNumber = accountSearchInput.value.trim();
+            if (!accountNumber) {
+                displayMessage(searchMessageDiv, 'Please enter an account number.', 'warning');
+                currentCustomer = null;
+                updateCustomerDisplay();
+                return;
+            }
+
+            const customers = getCustomers();
+            const foundCustomer = customers.find(c => c.accountNumber === accountNumber);
+
+            if (foundCustomer) {
+                currentCustomer = foundCustomer;
+                // Initialize transactions array if it doesn't exist
+                if (!currentCustomer.transactions) {
+                    currentCustomer.transactions = [];
+                }
+                displayMessage(searchMessageDiv, 'Account found!', 'success');
+            } else {
+                currentCustomer = null;
+                displayMessage(searchMessageDiv, 'Account not found. Please check the number.', 'error');
+            }
+            updateCustomerDisplay();
+        });
+
+        // Deposit functionality
+        depositBtn.addEventListener('click', function() {
+            if (!currentCustomer) {
+                displayMessage(transactionMessageDiv, 'Please search for an account first.', 'warning');
+                return;
+            }
+
+            let amount = parseFloat(transactionAmountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                displayMessage(transactionMessageDiv, 'Please enter a valid deposit amount.', 'warning');
+                return;
+            }
+
+            let customers = getCustomers();
+            const customerIndex = customers.findIndex(c => c.accountNumber === currentCustomer.accountNumber);
+
+            if (customerIndex !== -1) {
+                // Ensure initialDeposit is treated as a number
+                customers[customerIndex].initialDeposit = parseFloat(customers[customerIndex].initialDeposit);
+                customers[customerIndex].initialDeposit += amount;
+
+                const transactionId = generateTransactionId();
+                const transactionDateTime = new Date().toLocaleString();
+
+                // Add transaction history
+                if (!customers[customerIndex].transactions) {
+                    customers[customerIndex].transactions = [];
+                }
+                const newTransaction = {
+                    date: new Date().toISOString(),
+                    type: 'Deposit',
+                    amount: amount,
+                    newBalance: customers[customerIndex].initialDeposit,
+                    transactionId: transactionId,
+                    cashierId: loggedInCashierId,
+                    cashierName: loggedInCashierName,
+                    branch: customers[customerIndex].selectedBranch || 'N/A' // Store branch in transaction for history
+                };
+                customers[customerIndex].transactions.push(newTransaction);
+
+                saveCustomers(customers);
+                currentCustomer = customers[customerIndex]; // Update current customer reference
+                updateCustomerDisplay();
+                displayMessage(transactionMessageDiv, `₹ ${amount.toLocaleString('en-IN')} deposited successfully!`, 'success');
+                transactionAmountInput.value = ''; // Clear amount field
+
+                // Show success modal
+                showSuccessModal(newTransaction, currentCustomer);
+            }
+        });
+
+        // Withdrawal functionality
+        withdrawBtn.addEventListener('click', function() {
+            if (!currentCustomer) {
+                displayMessage(transactionMessageDiv, 'Please search for an account first.', 'warning');
+                return;
+            }
+
+            let amount = parseFloat(transactionAmountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                displayMessage(transactionMessageDiv, 'Please enter a valid withdrawal amount.', 'warning');
+                return;
+            }
+
+            let customers = getCustomers();
+            const customerIndex = customers.findIndex(c => c.accountNumber === currentCustomer.accountNumber);
+
+            if (customerIndex !== -1) {
+                customers[customerIndex].initialDeposit = parseFloat(customers[customerIndex].initialDeposit);
+
+                if (customers[customerIndex].initialDeposit < amount) {
+                    displayMessage(transactionMessageDiv, 'Insufficient balance for this withdrawal.', 'error');
+                    return;
+                }
+
+                customers[customerIndex].initialDeposit -= amount;
+
+                const transactionId = generateTransactionId();
+                const transactionDateTime = new Date().toLocaleString();
+
+                // Add transaction history
+                if (!customers[customerIndex].transactions) {
+                    customers[customerIndex].transactions = [];
+                }
+                const newTransaction = {
+                    date: new Date().toISOString(),
+                    type: 'Withdrawal',
+                    amount: amount,
+                    newBalance: customers[customerIndex].initialDeposit,
+                    transactionId: transactionId,
+                    cashierId: loggedInCashierId,
+                    cashierName: loggedInCashierName,
+                    branch: currentCustomer.selectedBranch || 'N/A' // Store branch in transaction for history
+                };
+                customers[customerIndex].transactions.push(newTransaction);
+
+                saveCustomers(customers);
+                currentCustomer = customers[customerIndex]; // Update current customer reference
+                updateCustomerDisplay();
+                displayMessage(transactionMessageDiv, `₹ ${amount.toLocaleString('en-IN')} withdrawn successfully!`, 'success');
+                transactionAmountInput.value = ''; // Clear amount field
+
+                // Show success modal
+                showSuccessModal(newTransaction, currentCustomer);
+            }
+        });
+
+        // Function to show the success modal
+        function showSuccessModal(transaction, customer) {
+            receiptType.textContent = transaction.type;
+            receiptAmount.textContent = `₹ ${parseFloat(transaction.amount).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            receiptTxnId.textContent = transaction.transactionId;
+            receiptNewBalance.textContent = `₹ ${parseFloat(transaction.newBalance).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            receiptCustomerName.textContent = customer.fullName;
+            receiptAccountNoLast6.textContent = customer.accountNumber.slice(-6); // Last 6 digits
+            receiptBranch.textContent = customer.selectedBranch || 'N/A';
+            receiptCashierName.textContent = loggedInCashierName;
+            receiptCashierId.textContent = loggedInCashierId;
+            receiptDateTime.textContent = new Date(transaction.date).toLocaleString();
+
+            successModal.style.display = 'block';
+        }
+
+        // Close modal button
+        closeModalBtn.addEventListener('click', function() {
+            successModal.style.display = 'none';
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', function() {
+            sessionStorage.removeItem('loggedInCashierId');
+            sessionStorage.removeItem('loggedInCashierName');
+            window.location.href = 'cashier_login.html'; // Redirect to login page
+        });
+
+        // Initialize display on page load
+        updateCustomerDisplay();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureBank - Cashier Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --bg-dark: #1a1a2e;
+            --bg-light: #2b2b4d;
+            --text-light: #e0e0e0;
+            --border-color: #444466;
+            --input-bg: #1f1f3f;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: linear-gradient(45deg, #1a1a2e 0%, #0a0a1a 100%);
+        }
+
+        .login-container {
+            background-color: #242440;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+            color: white;
+            background-color: #dc3545; /* Red for error */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Cashier Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="cashierId">Cashier ID:</label>
+                <input type="text" id="cashierId" placeholder="Enter your Cashier ID" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit">Login</button>
+            <div class="message" id="loginMessage">Invalid Cashier ID or password.</div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const cashierIdInput = document.getElementById('cashierId').value;
+            const passwordInput = document.getElementById('password').value;
+            const loginMessage = document.getElementById('loginMessage');
+
+            // Define allowed cashier credentials
+            const validCashier = {
+                id: 'CASHSUDK1',
+                password: 'Sudip@K1',
+                name: 'Mr. Sudip Pal'
+            };
+
+            if (cashierIdInput === validCashier.id && passwordInput === validCashier.password) {
+                // Store cashier info in sessionStorage (clears when browser tab is closed)
+                sessionStorage.setItem('loggedInCashierId', validCashier.id);
+                sessionStorage.setItem('loggedInCashierName', validCashier.name);
+                
+                // Redirect to the cashier operations page
+                window.location.href = 'cashier_operations.html';
+            } else {
+                loginMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
