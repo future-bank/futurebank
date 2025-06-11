@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Bank - India ka khud ka Bank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <style>
+        :root {
+            --fino-blue: #007bff; /* Fino-like blue */
+            --fino-dark-blue: #0056b3;
+            --fino-green: #28a745; /* Green for success/highlights */
+            --fino-dark-bg: #f8f9fa; /* Light background for main content, like Fino */
+            --fino-light-text: #333; /* Dark text for light background */
+            --fino-section-bg: #e9ecef; /* Slightly darker background for sections */
+            --fino-border: #dee2e6;
+            --fino-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--fino-dark-bg);
+            color: var(--fino-light-text);
+            margin: 0;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: white;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--fino-border);
+            box-shadow: 0 2px 10px var(--fino-shadow);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            color: var(--fino-blue);
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 0.7em;
+            color: #6c757d;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: var(--fino-light-text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--fino-blue);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://via.placeholder.com/1500x700/007bff/FFFFFF?text=Digital+Banking+for+You') center/cover no-repeat; /* Updated placeholder */
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-section h2 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-section p {
+            font-size: 1.4em;
+            margin-bottom: 40px;
+            max-width: 800px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-button {
+            background-color: var(--fino-green);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .hero-button:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+        }
+
+        /* General Section Styling */
+        .section-padding {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .section-heading {
+            font-size: 2.8em;
+            color: var(--fino-blue);
+            margin-bottom: 50px;
+            font-weight: 600;
+        }
+        .content-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            background-color: var(--fino-section-bg);
+            border-bottom: 1px solid var(--fino-border);
+        }
+        .benefit-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px var(--fino-shadow);
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--fino-border);
+        }
+        .benefit-card .icon {
+            font-size: 3em;
+            color: var(--fino-blue);
+            margin-bottom: 20px;
+        }
+        .benefit-card h3 {
+            color: var(--fino-light-text);
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .benefit-card p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        /* Features Section */
+        .features-section {
+            background-color: var(--fino-dark-bg);
+            border-bottom: 1px solid var(--fino-border);
+        }
+        .feature-item {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px var(--fino-shadow);
+            width: 350px;
+            text-align: left;
+            transition: transform 0.3s ease;
+            border: 1px solid var(--fino-border);
+        }
+        .feature-item h3 {
+            color: var(--fino-green);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .feature-item p {
+            color: #555;
+        }
+        .feature-item ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+        .feature-item ul li {
+            background-color: var(--fino-section-bg);
+            padding: 8px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            font-size: 0.95em;
+            color: var(--fino-light-text);
+        }
+
+        /* Customer Reviews */
+        .reviews-section {
+            background-color: var(--fino-section-bg);
+            border-bottom: 1px solid var(--fino-border);
+        }
+        .review-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px var(--fino-shadow);
+            width: 350px;
+            text-align: center;
+            font-style: italic;
+            color: #555;
+            position: relative;
+            border: 1px solid var(--fino-border);
+        }
+        .review-card::before {
+            content: "\201C"; /* Left double quotation mark */
+            font-size: 4em;
+            color: var(--fino-blue);
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            line-height: 0.8;
+            opacity: 0.2;
+        }
+        .review-card p {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .review-card .customer-name {
+            font-weight: 600;
+            color: var(--fino-blue);
+            font-style: normal;
+        }
+
+        /* FAQs Section */
+        .faq-section {
+            background-color: var(--fino-dark-bg);
+            border-bottom: 1px solid var(--fino-border);
+            text-align: left; /* Align FAQ text to left */
+        }
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background-color: white;
+            border: 1px solid var(--fino-border);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--fino-shadow);
+        }
+        .faq-question {
+            padding: 15px 20px;
+            background-color: var(--fino-section-bg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--fino-blue);
+        }
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            color: #555;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust as needed */
+            padding: 15px 20px;
+        }
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* Call to Action Section */
+        .cta-section {
+            padding: 60px 20px;
+            background-color: var(--fino-section-bg);
+            text-align: center;
+            border-top: 1px solid var(--fino-border);
+        }
+
+        .cta-section .hero-button {
+            background-color: var(--fino-blue);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+        .cta-section .hero-button:hover {
+            background-color: var(--fino-dark-blue);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #eee;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9em;
+            border-top: 1px solid #555;
+            margin-top: auto;
+        }
+
+        .footer-links-section {
+            background-color: #444; /* Slightly lighter footer section */
+            padding: 20px 20px;
+            text-align: center;
+            color: #ccc;
+        }
+        .footer-links-section h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .footer-links-section .links-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .footer-links-section .links-grid a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+        }
+        .footer-links-section .links-grid a:hover {
+            color: var(--fino-blue);
+        }
+
+        .social-media {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+        }
+        .social-media a {
+            color: white;
+            font-size: 1.8em;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+        .social-media a:hover {
+            color: var(--fino-blue);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nav-links {
+                margin-top: 20px;
+                flex-direction: column;
+            }
+            .nav-links li {
+                margin: 10px 0;
+            }
+            .hero-section h2 {
+                font-size: 2.5em;
+            }
+            .hero-section p {
+                font-size: 1.1em;
+            }
+            .hero-button {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+            .section-heading {
+                font-size: 2em;
+            }
+            .content-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .benefit-card, .feature-item, .review-card {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+            .faq-container {
+                padding: 0 10px;
+            }
+            .footer-links-section .links-grid {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .social-media a {
+                font-size: 1.5em;
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Future Bank</h1>
+                <span>India ka khud ka Bank</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="future_bank_form.html">Open Account</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h2>Your Trust, Our Digital Future.</h2>
+            <p>Experience seamless, secure, and accessible banking at your fingertips. Future Bank – India ka khud ka Bank.</p>
+            <a href="future_bank_form.html" class="hero-button">Open Your Account Today!</a>
+        </section>
+
+        <section class="benefits-section section-padding">
+            <h2 class="section-heading">Why Choose Future Bank?</h2>
+            <div class="content-grid">
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-percent"></i></div>
+                    <h3>Earn More, Save Smart</h3>
+                    <p>Get an attractive **Annual 2% Interest** on your savings account. Watch your money grow!</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-home"></i></div>
+                    <h3>Doorstep Banking</h3>
+                    <p>Enjoy the convenience of **Doorstep Service** for banking essentials. We come to you!</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Uncompromised Security</h3>
+                    <p>Your transactions and data are protected with state-of-the-art encryption and security measures.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <h3>Easy Loan Access</h3>
+                    <p>Coming soon: Simplified loan applications and quick approvals tailored to your needs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section section-padding">
+            <h2 class="section-heading">Our Key Features</h2>
+            <div class="content-grid">
+                <div class="feature-item">
+                    <h3>Accounts</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Savings Account with high interest</li>
+                        <li><i class="fas fa-check-circle"></i> Current Account for businesses</li>
+                        <li><i class="fas fa-check-circle"></i> Fixed Deposits (FDs) with competitive rates</li>
+                    </ul>
+                </div>
+                <div class="feature-item">
+                    <h3>Digital Services</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Intuitive Mobile Banking App</li>
+                        <li><i class="fas fa-check-circle"></i> Instant Fund Transfers (IMPS/NEFT/RTGS)</li>
+                        <li><i class="fas fa-check-circle"></i> Bill Payments & Recharges</li>
+                    </ul>
+                </div>
+                <div class="feature-item">
+                    <h3>Upcoming Services</h3>
+                    <ul>
+                        <li><i class="fas fa-clock"></i> Personal & Business Loans</li>
+                        <li><i class="fas fa-clock"></i> Various Insurance Products</li>
+                        <li><i class="fas fa-clock"></i> Wealth Management Solutions</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews-section section-padding">
+            <h2 class="section-heading">Bank ka view, Customer ka review.</h2>
+            <div class="content-grid">
+                <div class="review-card">
+                    <p>"Future Bank has transformed my banking experience. The 2% interest rate is a game-changer, and their doorstep service is incredibly convenient!"</p>
+                    <p class="customer-name">- Ms. Rina Devi</p>
+                </div>
+                <div class="review-card">
+                    <p>"Opening an account was super easy, and their mobile app is very user-friendly. Highly recommend Future Bank for modern banking needs."</p>
+                    <p class="customer-name">- Mr. Alok Singh</p>
+                </div>
+                <div class="review-card">
+                    <p>"The customer support is top-notch, always ready to help. I feel secure knowing my money is with Future Bank. Truly India's own bank!"</p>
+                    <p class="customer-name">- Mrs. S. Fatima</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section section-padding">
+            <h2 class="section-heading">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What is a Payment Bank?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A Payment Bank is a new model of banks conceptualized by the Reserve Bank of India (RBI). It aims to provide small savings accounts and payments/remittance services to low-income households, small businesses, and migrant workers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What is the annual interest rate for savings accounts?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Future Bank offers an attractive **annual interest rate of 2%** on your savings account balance.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is doorstep banking service available?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, Future Bank provides **doorstep banking services** for select transactions and services to enhance your convenience.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How can I open an account?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can easily open an account by clicking on the "Open Account" button on our homepage and filling out the online form. Our team will guide you through the process.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section section-padding">
+            <h2 class="section-heading">Begin Your Digital Banking Journey!</h2>
+            <a href="future_bank_form.html" class="hero-button">Open Your Account Today</a>
+        </section>
+    </main>
+
+    <div class="footer-links-section">
+        <h4>Important Links</h4>
+        <div class="links-grid">
+            <a href="#">Notice & Policy</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms and Conditions</a>
+            <a href="#">RBI Regulations</a>
+            <a href="#">Security</a>
+            <a href="#">Safe Banking Tips</a>
+            <a href="#">Customer Grievance</a>
+            <a href="#">Careers</a>
+        </div>
+        <div class="social-media">
+            <a href="https://facebook.com/futurebank" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/futurebank" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com/futurebank" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://threads.net/@futurebank" target="_blank" aria-label="Threads"><i class="fab fa-threads"></i></a>
+            <a href="https://linkedin.com/company/futurebank" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Future Bank. All rights reserved.</p>
+        <p>Contact us: info@futurebank.com | +91 9876543210 | Branch Address: 123, Digital Tower, Bank Street, Kolkata, West Bengal 700001</p>
+    </footer>
+
+    <script>
+        // FAQ Accordion functionality
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', event => {
+                const faqItem = item.closest('.faq-item');
+                faqItem.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
